@@ -10,6 +10,10 @@ namespace Save_reader {
         static void Main(string[] args) {
             var fs = File.OpenRead(args[0]);
             var sf = new SaveFile(fs);
+
+            foreach(var kv in sf.entries) {
+                Console.WriteLine($"{kv.Key} {kv.Value}");
+            }
         }
     }
 }
