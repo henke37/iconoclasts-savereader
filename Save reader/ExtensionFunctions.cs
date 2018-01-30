@@ -12,6 +12,12 @@ namespace Save_reader {
             return new String(Encoding.UTF8.GetChars(ba,0,bytesToRead-1));
         }
 
+        public static string ReadAsUTF8(this Stream s) {
+            var ba = new byte[s.Length];
+            s.Read(ba, 0, (int)s.Length);
+            return new string(Encoding.UTF8.GetChars(ba));
+        }
+
         public static void Skip(this BinaryReader r, int bytesToSkip) {
             r.BaseStream.Seek(bytesToSkip, SeekOrigin.Current);
         }
