@@ -21,5 +21,11 @@ namespace Save_reader {
         public static void Skip(this BinaryReader r, int bytesToSkip) {
             r.BaseStream.Seek(bytesToSkip, SeekOrigin.Current);
         }
+
+        public static void WriteLenPrefixedUTFString(this BinaryWriter w,string str) {
+            var ba=Encoding.UTF8.GetBytes(str+"\0");
+            w.Write((int)ba.Length);
+            w.Write(ba);
+        }
     }
 }

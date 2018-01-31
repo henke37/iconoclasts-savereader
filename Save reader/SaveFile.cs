@@ -40,6 +40,27 @@ namespace Save_reader {
                                 string val = r.ReadUTFString(valLen);
                                 entries.Add(key, val);
                         } break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+        }
+
+        public void Write(Stream s) {
+            using(BinaryWriter w=new BinaryWriter(s)) {
+                w.Write(SIG);
+                w.Write((int)entries.Count);
+                foreach(var kv in entries) {
+                    w.WriteLenPrefixedUTFString(kv.Key);
+                    if(kv.Value is double) {
+                        w.Write((int)1);
+                        w.Write((double)kv.Value);
+                    } else if(kv.Value is string) {
+                        w.Write((int)2);
+                        w.WriteLenPrefixedUTFString((string)kv.Value);
+                    } else {
+                        throw new NotImplementedException();
                     }
                 }
             }
