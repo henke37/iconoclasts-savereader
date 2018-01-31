@@ -17,6 +17,10 @@ namespace Save_reader {
             Read(s);
         }
 
+        public SaveFile() {
+            entries = new Dictionary<string, dynamic>();
+        }
+
         public void Read(Stream s) {
             entries = new Dictionary<string, dynamic>();
             using(BinaryReader r = new BinaryReader(s)) {
@@ -32,14 +36,16 @@ namespace Save_reader {
                     uint type = r.ReadUInt32();
                     switch(type) {
                         case 1: {
-                                var val =r.ReadDouble();
+                                var val = r.ReadDouble();
                                 entries.Add(key, val);
-                            } break;
+                            }
+                            break;
                         case 2: {
                                 int valLen = r.ReadInt32();
                                 string val = r.ReadUTFString(valLen);
                                 entries.Add(key, val);
-                        } break;
+                            }
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -48,7 +54,7 @@ namespace Save_reader {
         }
 
         public void Write(Stream s) {
-            using(BinaryWriter w=new BinaryWriter(s)) {
+            using(BinaryWriter w = new BinaryWriter(s)) {
                 w.Write(SIG);
                 w.Write((int)entries.Count);
                 foreach(var kv in entries) {
